@@ -13,7 +13,7 @@ public class CustomerExcercise {
 	// JDBC URL, username and password of MySQL server
     private static final String url = "jdbc:mysql://localhost:3306/db_world";
     private static final String user = "root";
-    private static final String password = "Madhu@890";
+    private static final String password = "root";
     
     Connection con;
     PreparedStatement prSt;
@@ -48,17 +48,17 @@ public class CustomerExcercise {
     	        break;
     	        
     	case 3: pse.updateNameRecord();
-        break;
+        	break;
     	        
     	case 4: pse.deleteRecord();
     	        break;
     		
     	
-		case 5: pse.fetchCustomers();
-				break;
+	case 5: pse.fetchCustomers();
+		break;
 		
-		case 6: pse.countCustomers();
-				break;
+	case 6: pse.countCustomers();
+		break;
 		
     	}
         	
@@ -101,8 +101,6 @@ public class CustomerExcercise {
 	            
 	            int count = prSt.executeUpdate();
 	            
-	            //show the number of records
-	            
 	        } catch (ClassNotFoundException e) {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
@@ -121,7 +119,7 @@ public class CustomerExcercise {
 	public void updateCityRecord(){
 		String sqlUpdate = "UPDATE cust SET ccity = ? WHERE cid = ?";
 		
-		try {
+	try {
             try {
 				Class.forName("com.mysql.jdbc.Driver");
 				con = DriverManager.getConnection(url, user, password);
@@ -146,26 +144,23 @@ public class CustomerExcercise {
  
             int rowAffected = prSt.executeUpdate();
             System.out.println(String.format("Row affected %d", rowAffected));
- 
-            
-           
 		}
-		catch (SQLException ex) {
+	catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
 		} 
 	
-	//-----------------------Updating record for city----------------------------------
+	//-----------------------Updating record for name----------------------------------//
 	public void updateNameRecord(){
 		String sqlUpdate = "UPDATE cust SET cname = ? WHERE cid = ?";
 		
-		try {
+	try {
             try {
-				Class.forName("com.mysql.jdbc.Driver");
-				con = DriverManager.getConnection(url, user, password);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		Class.forName("com.mysql.jdbc.Driver");
+		con = DriverManager.getConnection(url, user, password);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
             prSt = con.prepareStatement(sqlUpdate);
             
             // Take user input for insertion
@@ -184,29 +179,26 @@ public class CustomerExcercise {
  
             int rowAffected = prSt.executeUpdate();
             System.out.println(String.format("Row affected %d", rowAffected));
- 
-            
            
-		}
-		catch (SQLException ex) {
+	}
+	catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-		} 
-	
-    
+} 
+
 	
 	//-------------------------- Deleting The Record-----------------------------//
-		public void deleteRecord()
+	public void deleteRecord()
 	    { 
-			String sqlUpdate = "DELETE from cust where cid=?";
+		String sqlUpdate = "DELETE from cust where cid=?";
 			
-			try {
+		try {
 	            try {
-					Class.forName("com.mysql.jdbc.Driver");
-					con = DriverManager.getConnection(url, user, password);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(url, user, password);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 	            prSt = con.prepareStatement(sqlUpdate);
 	            
 	            // Take user input for insertion
@@ -225,23 +217,21 @@ public class CustomerExcercise {
 	            System.out.println(ex.getMessage());
 	        }				
 	    }
-		
-
+	
 		
 //-----------------------------------Fetching all the customers-----------------------------
 public void fetchCustomers(){
 	String query1= "select cid,cname,cord,ccity from cust";
 	
 	try {     	
-    	try {
+    		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}  	
-        // opening database connection to MySQL server
+
         con = DriverManager.getConnection(url, user, password);
 
-        // getting Statement object to execute query
         stmt = con.createStatement();
 	
 	rs = stmt.executeQuery(query1); 
@@ -263,20 +253,19 @@ public void fetchCustomers(){
         try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
         try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
     }
-		}
+}
         
 
 //------------------------------------counting the customers--------------------------------
-public void countCustomers()
-{
+public void countCustomers(){
 	String query = "select count(*) from cust";
 
     try {     	
     	try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		Class.forName("com.mysql.jdbc.Driver");
+	} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+	}
     	
         // opening database connection to MySQL server
         con = DriverManager.getConnection(url, user, password);
@@ -299,6 +288,6 @@ public void countCustomers()
         try { con.close(); } catch(SQLException se) { /*can't do anything */ }
         try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
         try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
+    	}
     }
-}
 }
