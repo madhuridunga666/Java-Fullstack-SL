@@ -1,0 +1,304 @@
+package sample.jdbc.program;
+
+import java.sql.Connection; 
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet; 
+import java.sql.SQLException; 
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class CustomerExcercise {
+
+	// JDBC URL, username and password of MySQL server
+    private static final String url = "jdbc:mysql://localhost:3306/db_world";
+    private static final String user = "root";
+    private static final String password = "Madhu@890";
+    
+    Connection con;
+    PreparedStatement prSt;
+    Statement stmt;
+    ResultSet rs;
+	
+	public static void main(String[] args) {
+		
+		CustomerExcercise pse = new CustomerExcercise();
+    	
+        Scanner input = new Scanner(System.in);
+    	
+        System.out.println("=============PREPARED STATEMENT MENU=================");
+        System.out.println("1. Insert the new customer Record"); 
+        System.out.println("2. Update the city Record");
+        System.out.println("3. Update the name Record");
+        System.out.println("4. Delete the customer Record");
+        System.out.println("5. Fetch the customer Record");
+        System.out.println("6. count the customer Record");
+        System.out.println("====================================================");
+    	System.out.println("Enter your choice from (1-6): ");
+    	
+    	int number = input.nextInt();
+    	System.out.println("You entered option" + number);
+    	
+    	switch(number)
+    	{
+    	case 1: pse.insertRecord();
+    	        break;
+    	
+    	case 2: pse.updateCityRecord();
+    	        break;
+    	        
+    	case 3: pse.updateNameRecord();
+        break;
+    	        
+    	case 4: pse.deleteRecord();
+    	        break;
+    		
+    	
+		case 5: pse.fetchCustomers();
+				break;
+		
+		case 6: pse.countCustomers();
+				break;
+		
+    	}
+        	
+	}
+	
+	//-------------------------- Inserting The Record-----------------------------//
+	public void insertRecord()
+    {  
+		String query = "insert into cust(cid,cname,cord,ccity) values(?,?,?,?)";
+		
+	      try {
+	            Class.forName("com.mysql.jdbc.Driver");
+	            con = DriverManager.getConnection(url, user, password);
+	           
+	            prSt = con.prepareStatement(query);
+	            
+	            // Take user input for insertion
+	            Scanner input = new Scanner(System.in);	
+	            
+	            System.out.print("Enter the custid:  ");
+	            int cid = input.nextInt();
+	            System.out.println();
+	            
+	            System.out.print("Enter the custname:  ");
+	            String cname = input.next();
+	            System.out.println();
+	            
+	            System.out.print("Enter the custorder:  ");
+	            String cord = input.next();
+	            System.out.println();
+	            
+	            System.out.print("Enter the custcity:  ");
+	            String ccity = input.next();
+	            System.out.println();
+	            
+	            prSt.setInt(1, cid);
+	            prSt.setString(2, cname);
+	            prSt.setString(3, cord);
+	            prSt.setString(4, ccity);
+	            
+	            int count = prSt.executeUpdate();
+	            
+	            //show the number of records
+	            
+	        } catch (ClassNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } finally{
+	            try{
+	                if(prSt != null) prSt.close();
+	                if(con != null) con.close();
+	            } catch(Exception ex){}
+	        }
+	}
+	
+	//-------------------------- Updating The city Record-----------------------------//
+	public void updateCityRecord(){
+		String sqlUpdate = "UPDATE cust SET ccity = ? WHERE cid = ?";
+		
+		try {
+            try {
+				Class.forName("com.mysql.jdbc.Driver");
+				con = DriverManager.getConnection(url, user, password);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+            prSt = con.prepareStatement(sqlUpdate);
+            
+            // Take user input for insertion
+            Scanner input = new Scanner(System.in);	
+            
+            System.out.print("Enter the custid:  ");
+            int cid = input.nextInt();
+            System.out.println();
+            
+            System.out.print("Enter the customer city:  ");
+            String ccity = input.next();
+            System.out.println();
+            
+            prSt.setString(1, ccity);
+            prSt.setInt(2, cid);
+ 
+            int rowAffected = prSt.executeUpdate();
+            System.out.println(String.format("Row affected %d", rowAffected));
+ 
+            
+           
+		}
+		catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+		} 
+	
+	//-----------------------Updating record for city----------------------------------
+	public void updateNameRecord(){
+		String sqlUpdate = "UPDATE cust SET cname = ? WHERE cid = ?";
+		
+		try {
+            try {
+				Class.forName("com.mysql.jdbc.Driver");
+				con = DriverManager.getConnection(url, user, password);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+            prSt = con.prepareStatement(sqlUpdate);
+            
+            // Take user input for insertion
+            Scanner input = new Scanner(System.in);	
+            
+            System.out.print("Enter the custid:  ");
+            int cid = input.nextInt();
+            System.out.println();
+            
+            System.out.print("Enter the customer name:  ");
+            String cname = input.next();
+            System.out.println();
+            
+            prSt.setString(1, cname);
+            prSt.setInt(2, cid);
+ 
+            int rowAffected = prSt.executeUpdate();
+            System.out.println(String.format("Row affected %d", rowAffected));
+ 
+            
+           
+		}
+		catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+		} 
+	
+    
+	
+	//-------------------------- Deleting The Record-----------------------------//
+		public void deleteRecord()
+	    { 
+			String sqlUpdate = "DELETE from cust where cid=?";
+			
+			try {
+	            try {
+					Class.forName("com.mysql.jdbc.Driver");
+					con = DriverManager.getConnection(url, user, password);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+	            prSt = con.prepareStatement(sqlUpdate);
+	            
+	            // Take user input for insertion
+	            Scanner input = new Scanner(System.in);	
+	            
+	            System.out.print("Enter the custid:  ");
+	            int cid = input.nextInt();
+	            System.out.println();
+	            
+	            prSt.setInt(1, cid);
+	            prSt.executeUpdate();
+	            
+	            System.out.println("Record deleted successfully");
+			}
+			catch (SQLException ex) {
+	            System.out.println(ex.getMessage());
+	        }				
+	    }
+		
+
+		
+//-----------------------------------Fetching all the customers-----------------------------
+public void fetchCustomers(){
+	String query1= "select cid,cname,cord,ccity from cust";
+	
+	try {     	
+    	try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}  	
+        // opening database connection to MySQL server
+        con = DriverManager.getConnection(url, user, password);
+
+        // getting Statement object to execute query
+        stmt = con.createStatement();
+	
+	rs = stmt.executeQuery(query1); 
+	
+	while (rs.next()) 
+	{ 
+	   int id = rs.getInt(1); 
+	   String name = rs.getString(2); 
+	   String order = rs.getString(3); 
+	   String city = rs.getString(3);
+	   System.out.printf("custid : %d, custname: %s, custorder : %s,custcity: %s %n", id, name,order, city); 
+	}
+   }
+	catch (SQLException sqlEx) {
+        sqlEx.printStackTrace();
+    } finally {
+        //close connection ,stmt and resultset here
+        try { con.close(); } catch(SQLException se) { /*can't do anything */ }
+        try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
+        try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
+    }
+		}
+        
+
+//------------------------------------counting the customers--------------------------------
+public void countCustomers()
+{
+	String query = "select count(*) from cust";
+
+    try {     	
+    	try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+    	
+        // opening database connection to MySQL server
+        con = DriverManager.getConnection(url, user, password);
+
+        // getting Statement object to execute query
+        stmt = con.createStatement();
+
+        // executing SELECT query
+         rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+            int count = rs.getInt(1);
+            System.out.println("Total number of customers : " + count);
+        }
+
+    } catch (SQLException sqlEx) {
+        sqlEx.printStackTrace();
+    } finally {
+        //close connection ,stmt and resultset here
+        try { con.close(); } catch(SQLException se) { /*can't do anything */ }
+        try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
+        try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
+    }
+}
+}
